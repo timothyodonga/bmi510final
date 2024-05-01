@@ -176,16 +176,16 @@ survCurv = function(status, time){
     dplyr::group_by(time) |>
     dplyr::summarize(n.events = sum(status == 1), n.censored = sum(status == 0)) |>
     dplyr::mutate(n.tot = n.events + n.censored) |>
-    dplyr::mutate(n.at.risk = lag(112-cumsum(n.tot), default=112)) |>
+    dplyr::mutate(n.at.risk = lag(nrow(df)-cumsum(n.tot), default=nrow(df))) |>
     dplyr::mutate(Hazard = n.events/n.at.risk) |>
-    dplyr::mutate(Hazard = replace_na(Hazard,0)) |>
+    dplyr::mutate(Hazard = tidyr::replace_na(Hazard,0)) |>
     dplyr::mutate(Survival = cumprod(1-Hazard)) |>
     dplyr::ungroup() |>
     dplyr::bind_rows(dplyr::tibble(time=0,Survival=1)) |>
     dplyr::arrange(time) |>
     dplyr::select(time, Survival)
   
-  fig = df.curv |> ggplot2::ggplot(aes(time, Survival)) + ggplot2::geom_line()
+  fig = df.curv |> ggplot2::ggplot(aes(time, Survival)) + ggplot2::geom_line() + ggplot2::labs(x = "Time", y = "Probability of survival")
   
   return (fig)
 }
