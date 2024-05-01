@@ -28,7 +28,7 @@ logLikBernoulli = function(data){
     return (loglik)
   }
   
-  p = seq(from=0, to=1, by=0.1)
+  p = seq(from=0, to=1, by=0.001)
   start = 2
   end = length(p) - 1
   
