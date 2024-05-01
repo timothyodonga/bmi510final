@@ -253,10 +253,11 @@ downloadRedcapReport = function(redcapTokenName, redcapUrl, redcapReportId){
 #'
 #' @export
 minimumN <- function(x1, x2 = NULL) {
+  # Note: I found the question unclear. The solution below is what made most sense from ChatGPT. 
   if (is.null(x2)) {
     # One-sample t-test
     result <- pwr::pwr.t.test(d = mean(x1), sig.level = 0.05, power = 0.8, alternative = "two.sided")
-    return(ceiling(result$n))
+    return((result$n))
   } else {
     # Two-sample t-test
     result <- pwr::pwr.t2n.test(n1 = length(x1), n2 = length(x2), sig.level = 0.05, power = 0.8, alternative = "two.sided")
