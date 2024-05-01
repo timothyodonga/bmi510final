@@ -154,13 +154,15 @@ pcApprox = function(x, npc){
 #' @export
 
 survCurv = function(status, time){
+  # This code was adopted from the Survival Analysis lecture.
   df = dplyr::tibble(time=time, status=status) |> dplyr::arrange(time) |> dplyr::filter(time >= 0)
+  num_rows = nrow(df)
   
   df.curv = df |>
     dplyr::group_by(time) |>
     dplyr::summarize(n.events = sum(status == 1), n.censored = sum(status == 0)) |>
     dplyr::mutate(n.tot = n.events + n.censored) |>
-    dplyr::mutate(n.at.risk = lag(nrow(df)-cumsum(n.tot), default=nrow(df))) |>
+    dplyr::mutate(n.at.risk = lag(num_rows-cumsum(n.tot), default=num_rows) |>
     dplyr::mutate(Hazard = n.events/n.at.risk) |>
     dplyr::mutate(Hazard = tidyr::replace_na(Hazard,0)) |>
     dplyr::mutate(Survival = cumprod(1-Hazard)) |>
