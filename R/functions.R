@@ -1,4 +1,4 @@
-#' @title Find the maximum Bernoulli log-likelihood parameter
+#' @title Calculate the parameter p that maximizes the log-likelihoood of data from Bernoulli trials
 #'
 #' @description This function calculates the log-likelihood of a Bernoulli distribution for a range of probability values (p) and then finds the p that maximizes the log-likelihood for the given data.
 #'
@@ -12,7 +12,7 @@
 #' @examples
 #' 
 #' # Simulate some Bernoulli trial data
-#' data <- rbinom(n = 100, size = 1, prob = 0.6)
+#' data <- c(1,0,0,0,1,1,1)
 #' 
 #' # Find the maximum log-likelihood parameter
 #' estimated_p <- logLikBernoulli(data)
@@ -41,9 +41,9 @@ logLikBernoulli = function(data){
 }
 
 
-#' @title Unscale a vector that was previously scaled with `scale()`
+#' @title Reverse the centering/scaling of a vector that has been passed through `scale()`
 #'
-#' @description This function takes a numeric vector that was previously scaled using the `scale()` function and attempts to unscale it back to the original scale. It retrieves the centering and scaling factors stored as attributes by `scale()` and applies the inverse transformation.
+#' @description This function takes a numeric vector that was previously scaled using the `scale()` function and attempts to unscale/uncenter it back to the original vector. It retrieves the centering and scaling factors stored as attributes by `scale()` and applies the inverse transformation.
 #'
 #' @param x A numeric vector that was previously scaled with `scale()`.
 #'
@@ -92,17 +92,15 @@ unscale = function(x){
 
 #' @title Perform an approximation on data 
 #'
-#' @description This function performs Principal Component Analysis (PCA) on a data matrix and returns an approximation of the data using a specified number of principal components (PCs). PCA is a dimensionality reduction technique that identifies the directions of greatest variance in the data.s
+#' @description This function performs Principal Component Analysis (PCA) on a data matrix and returns an approximation of the data using a specified number of principal components (PCs). PCA is a dimensionality reduction technique that identifies the directions of greatest variance in the data.
 #'
 #' @param x A numeric data matrix.
 #'
-#' @param npc An integer specifying the number of principal components to retain for approximation (default is 1).
+#' @param npc An integer specifying the number of principal components to retain for approximation.
 #'
 #' @return A numeric matrix representing the approximation of the original data using the specified number of principal components.
 #'
 #' @details This function assumes the data in `x` is in its original scale. It centers the data using `scale(center=TRUE, scale=FALSE)` before performing PCA. The function retrieves the eigenvectors corresponding to the largest eigenvalues from the covariance matrix. It then uses the selected eigenvectors to reconstruct an approximation of the centered data. Finally, it uncenters the reconstructed data to obtain the approximation in the original scale (assuming attributes are present).
-#'
-#' @note This function performs PCA centering but not scaling. Scaling might be beneficial depending on the data characteristics.
 #'
 #' @examples
 #' 
@@ -145,29 +143,14 @@ pcApprox = function(x, npc){
 
 #' @title Plot a survival curve S(t)
 #'
-#' @description This function takes vectors of event times (`time`) and event indicators (`status`) and calculates the Kaplan-Meier (KM) survival curve. The KM curve estimates the probability of surviving beyond a specific time point for a population experiencing events over time.
+#' @description This function takes vectors of event times (`time`) and event indicators (`status`) and calculates the survival curve. The sur curve estimates the probability of surviving beyond a specific time point for a population experiencing events over time.
 #'
 #' @param status A numeric vector indicating event status (1 = event, 0 = censored).
 #'
 #' @param time A numeric vector of event times corresponding to the `status` vector.
 #'
-#' @return A ggplot object representing the Kaplan-Meier survival curve.
-#'
-#' @details This function utilizes dplyr verbs to manipulate the data and calculate the Kaplan-Meier curve elements. It first arranges the data by time. Then, it groups by time, calculates the number of events, censored observations, total at risk, hazard rate, and survival probability for each time point. Missing hazard rates (at the beginning) are replaced with 0. Finally, it accumulates survival probabilities, ungroups the data, adds an initial point (time=0, survival=1), rearranges by time, and selects the desired columns (time and survival) for the plot. The function then uses ggplot2 to create the survival curve visualization.
-#'
-#' @references Kaplan, E. L., & Meier, P. (1958). Nonparametric estimation from incomplete observations. Journal of the American Statistical Association, 53(282), 457-481.
-#'
-#' @examples
+#' @return A ggplot object representing the survival curve.
 #' 
-#' # Simulate some survival data
-#' set.seed(123)
-#' time <- rexp(n = 20, rate = 0.1)
-#' status <- rbinom(n = 20, size = 1, prob = 0.7)
-#' 
-#' 
-#' # Print the ggplot object (use ggplot2::print() for detailed view)
-#' km_curve
-#'
 #' @export
 
 survCurv = function(status, time){

@@ -2,7 +2,7 @@
 % Please edit documentation in R/functions.R
 \name{unscale}
 \alias{unscale}
-\title{Unscale a vector that was previously scaled with \code{scale()}}
+\title{Reverse the centering/scaling of a vector that has been passed through \code{scale()}}
 \usage{
 unscale(x)
 }
@@ -13,7 +13,7 @@ unscale(x)
 The unscaled numeric vector.
 }
 \description{
-This function takes a numeric vector that was previously scaled using the \code{scale()} function and attempts to unscale it back to the original scale. It retrieves the centering and scaling factors stored as attributes by \code{scale()} and applies the inverse transformation.
+This function takes a numeric vector that was previously scaled using the \code{scale()} function and attempts to unscale/uncenter it back to the original vector. It retrieves the centering and scaling factors stored as attributes by \code{scale()} and applies the inverse transformation.
 }
 \details{
 This function assumes that the input vector was scaled using the \code{scale()} function. It retrieves the centering (\code{scaled:center}) and scaling (\code{scaled:scale}) factors stored as attributes by \code{scale()}. If neither attribute is found, it raises an error indicating the vector cannot be unscaled. Otherwise, it applies the inverse transformation based on the presence of both or only one of the attributes.

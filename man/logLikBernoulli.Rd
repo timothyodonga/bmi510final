@@ -2,7 +2,7 @@
 % Please edit documentation in R/functions.R
 \name{logLikBernoulli}
 \alias{logLikBernoulli}
-\title{Find the maximum Bernoulli log-likelihood parameter}
+\title{Calculate the parameter p that maximizes the log-likelihoood of data from Bernoulli trials}
 \usage{
 logLikBernoulli(data)
 }
@@ -21,7 +21,7 @@ This function leverages the idea that a Bernoulli distribution is a special case
 \examples{
 
 # Simulate some Bernoulli trial data
-data <- rbinom(n = 100, size = 1, prob = 0.6)
+data <- c(1,0,0,0,1,1,1)
 
 # Find the maximum log-likelihood parameter
 estimated_p <- logLikBernoulli(data)
