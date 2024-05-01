@@ -134,7 +134,10 @@ pcApprox = function(x, npc){
   x_reconstruct = x_centered %*% pca_vectors %*% t(pca_vectors) 
   
   # Uncenter and/or unscale the data to return the approximation of the data.
-  x_result = x_reconstruct + attributes(x_centered)$`scaled:center`
+  center_matrix = outer(rep(1, nrow(x_centered)), attributes(x_centered)$`scaled:center`)
+  
+  x_result = x_reconstruct + center_matrix
+  
   
   return (x_result)
 }
