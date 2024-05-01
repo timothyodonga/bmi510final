@@ -4,6 +4,7 @@ This project includes a package of R functions from the BMI510 final project. Th
 - survCurv
 - unscale
 - pcApprox
+- standardizeNames
 - minimumN
 - downloadRedcapReport
 
