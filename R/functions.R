@@ -185,7 +185,7 @@ survCurv = function(status, time){
     dplyr::arrange(time) |>
     dplyr::select(time, Survival)
   
-  fig = df.curv |> ggplot2::ggplot(aes(time, Survival)) + ggplot2::geom_line() + ggplot2::labs(x = "Time", y = "Probability of survival")
+  fig = df.curv |> ggplot2::ggplot(ggplot2::aes(time, Survival)) + ggplot2::geom_line() + ggplot2::labs(x = "Time", y = "Probability of survival")
   
   return (fig)
 }
