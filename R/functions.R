@@ -242,3 +242,40 @@ downloadRedcapReport = function(redcapTokenName, redcapUrl, redcapReportId){
   return (df_result)
 }
 
+#' Calculate Minimum Sample Size for T-Test
+#'
+#' This function calculates the minimum sample size needed for a t-test with specified power and significance level.
+#'
+#' @param x1 Numeric vector. One or two samples of preliminary data.
+#' @param x2 Numeric vector (optional). Second sample of preliminary data for a two-sample t-test.
+#' @param power Numeric scalar. Desired statistical power (default is 0.8).
+#' @param alpha Numeric scalar. Significance level (default is 0.05).
+#'
+#' @return Numeric scalar. Minimum sample size needed for the t-test.
+#'
+#' @details This function calculates the minimum sample size needed for a t-test, either one-sample or two-sample, with specified power and significance level. If only one sample is provided (\code{x1}), a one-sample t-test is assumed; otherwise, a two-sample t-test is assumed.
+#'
+#' @examples
+#' # One-sample t-test
+#' x <- rnorm(20)
+#' minimumN(x)
+#'
+#' # Two-sample t-test
+#' x1 <- rnorm(20)
+#' x2 <- rnorm(20)
+#' minimumN(x1, x2)
+#'
+#' @export
+minimumN <- function(x1, x2 = NULL) {
+  if (is.null(x2)) {
+    # One-sample t-test
+    result <- pwr::pwr.t.test(d = mean(x1), sig.level = 0.05, power = 0.8, alternative = "two.sided")
+    return(ceiling(result$n))
+  } else {
+    # Two-sample t-test
+    result <- pwr::pwr.t2n.test(n1 = length(x1), n2 = length(x2), sig.level = 0.05, power = 0.8, alternative = "two.sided")
+    return(ceiling(result$n))
+  }
+}
+
+

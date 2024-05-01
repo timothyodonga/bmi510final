@@ -2,6 +2,7 @@
 
 export(downloadRedcapReport)
 export(logLikBernoulli)
+export(minimumN)
 export(pcApprox)
 export(survCurv)
 export(unscale)
