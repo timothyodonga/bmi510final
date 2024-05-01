@@ -125,7 +125,7 @@ pcApprox = function(x, npc){
   pcs = eigen(cov_x)
   
   pc_vectors = pcs$vectors
-  print(pc_vectors)
+  #print(pc_vectors)
   # To get the approximation of the data, select the n columns of the eigen vector matrix. I think R gives 
   # them ordered in descending order
   pca_vectors = pc_vectors[,1:npc]
