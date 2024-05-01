@@ -32,7 +32,7 @@ logLikBernoulli = function(data){
   start = 2
   end = length(p) - 1
   
-  df = tibble(p=p[start:end])
+  df = dplyr::tibble(p=p[start:end])
   df$loglik = apply(matrix(data_p$p), 1, BernouilliLogLik, x=data)
   
   max_row = df |> arrange(desc(loglik)) |> head(1)
@@ -139,6 +139,56 @@ pcApprox = function(x, npc){
   return (x_result)
 }
 
+
+#' @title Plot a survival curve S(t)
+#'
+#' @description This function takes vectors of event times (`time`) and event indicators (`status`) and calculates the Kaplan-Meier (KM) survival curve. The KM curve estimates the probability of surviving beyond a specific time point for a population experiencing events over time.
+#'
+#' @param status A numeric vector indicating event status (1 = event, 0 = censored).
+#'
+#' @param time A numeric vector of event times corresponding to the `status` vector.
+#'
+#' @return A ggplot object representing the Kaplan-Meier survival curve.
+#'
+#' @details This function utilizes dplyr verbs to manipulate the data and calculate the Kaplan-Meier curve elements. It first arranges the data by time. Then, it groups by time, calculates the number of events, censored observations, total at risk, hazard rate, and survival probability for each time point. Missing hazard rates (at the beginning) are replaced with 0. Finally, it accumulates survival probabilities, ungroups the data, adds an initial point (time=0, survival=1), rearranges by time, and selects the desired columns (time and survival) for the plot. The function then uses ggplot2 to create the survival curve visualization.
+#'
+#' @references Kaplan, E. L., & Meier, P. (1958). Nonparametric estimation from incomplete observations. Journal of the American Statistical Association, 53(282), 457-481.
+#'
+#' @examples
+#' 
+#' # Simulate some survival data
+#' set.seed(123)
+#' time <- rexp(n = 20, rate = 0.1)
+#' status <- rbinom(n = 20, size = 1, prob = 0.7)
+#' 
+#' # Generate Kaplan-Meier survival curve
+#' km_curve <- survCurv(status, time)
+#' 
+#' # Print the ggplot object (use ggplot2::print() for detailed view)
+#' km_curve
+#'
+#' @export
+
+survCurv = function(status, time){
+  df = dplyr::tibble(time=time, status=status) |> dplyr::arrange(time)
+  
+  df.curv = df |>
+    dplyr::group_by(time) |>
+    dplyr::summarize(n.events = sum(status == 1), n.censored = sum(status == 0)) |>
+    dplyr::mutate(n.tot = n.events + n.censored) |>
+    dplyr::mutate(n.at.risk = lag(112-cumsum(n.tot), default=112)) |>
+    dplyr::mutate(Hazard = n.events/n.at.risk) |>
+    dplyr::mutate(Hazard = replace_na(Hazard,0)) |>
+    dplyr::mutate(Survival = cumprod(1-Hazard)) |>
+    dplyr::ungroup() |>
+    dplyr::bind_rows(dplyr::tibble(time=0,Survival=1)) |>
+    dplyr::arrange(time) |>
+    dplyr::select(time, Survival)
+  
+  fig = df.curv |> ggplot2::ggplot(aes(time, Survival)) + ggplot2::geom_line()
+  
+  return (fig)
+}
 
 
 

@@ -2,4 +2,5 @@
 
 export(logLikBernoulli)
 export(pcApprox)
+export(survCurv)
 export(unscale)
