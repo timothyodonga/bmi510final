@@ -33,7 +33,7 @@ logLikBernoulli = function(data){
   end = length(p) - 1
   
   df = dplyr::tibble(p=p[start:end])
-  df$loglik = apply(matrix(data_p$p), 1, BernouilliLogLik, x=data)
+  df$loglik = apply(matrix(df$p), 1, BernouilliLogLik, x=data)
   
   max_row = df |> arrange(desc(loglik)) |> head(1)
   
