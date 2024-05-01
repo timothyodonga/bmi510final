@@ -279,3 +279,31 @@ minimumN <- function(x1, x2 = NULL) {
 }
 
 
+#' @title Standardize column names to small camel case
+#'
+#' @description This function standardizes the column names of a data frame to small camel case (e.g., "columnA" becomes "columnA"). It utilizes `dplyr::rename_with` and `janitor::make_clean_names` to achieve consistent and valid variable names.
+#'
+#' @param data A data frame object.
+#'
+#' @return A data frame with the same data but standardized column names in small camel case.
+#'
+#' @details This function leverages the `dplyr` and `janitor` packages. It applies `janitor::make_clean_names` to each column name, cleaning and converting it to a valid R variable name in small camel case. Then, it uses `dplyr::rename_with` to perform the renaming based on the standardized names.
+#'
+#' @examples
+#' 
+#' # Example data frame
+#' data <- data.frame(column_A = 1:5, Column_B = rnorm(5))
+#' 
+#' # Standardize column names to small camel case
+#' standardized_data <- standardizeNames(data)
+#' 
+#' # Print the data frame with standardized names
+#' head(standardized_data)
+#'
+#' @export
+standardizeNames = function(data){
+  data = data |> dplyr::rename_with(~ janitor::make_clean_names(.x, case = "small_camel"))
+  return (data)
+}
+
+
