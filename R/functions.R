@@ -90,9 +90,9 @@ unscale = function(x){
   return (x_unscaled)
 }
 
-#' @title Perform Principal Component Approximation (PCA)
+#' @title Perform an approximation on data 
 #'
-#' @description This function performs Principal Component Analysis (PCA) on a data matrix and returns an approximation of the data using a specified number of principal components (PCs). PCA is a dimensionality reduction technique that identifies the directions of greatest variance in the data. This function centers the data and then computes the covariance matrix to find the principal components. It retains the specified number of PCs and uses them to reconstruct an approximation of the original data.
+#' @description This function performs Principal Component Analysis (PCA) on a data matrix and returns an approximation of the data using a specified number of principal components (PCs). PCA is a dimensionality reduction technique that identifies the directions of greatest variance in the data.s
 #'
 #' @param x A numeric data matrix.
 #'

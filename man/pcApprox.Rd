@@ -2,7 +2,7 @@
 % Please edit documentation in R/functions.R
 \name{pcApprox}
 \alias{pcApprox}
-\title{Perform Principal Component Approximation (PCA)}
+\title{Perform an approximation on data}
 \usage{
 pcApprox(x, npc)
 }
@@ -15,7 +15,7 @@ pcApprox(x, npc)
 A numeric matrix representing the approximation of the original data using the specified number of principal components.
 }
 \description{
-This function performs Principal Component Analysis (PCA) on a data matrix and returns an approximation of the data using a specified number of principal components (PCs). PCA is a dimensionality reduction technique that identifies the directions of greatest variance in the data. This function centers the data and then computes the covariance matrix to find the principal components. It retains the specified number of PCs and uses them to reconstruct an approximation of the original data.
+This function performs Principal Component Analysis (PCA) on a data matrix and returns an approximation of the data using a specified number of principal components (PCs). PCA is a dimensionality reduction technique that identifies the directions of greatest variance in the data.s
 }
 \details{
 This function assumes the data in \code{x} is in its original scale. It centers the data using \code{scale(center=TRUE, scale=FALSE)} before performing PCA. The function retrieves the eigenvectors corresponding to the largest eigenvalues from the covariance matrix. It then uses the selected eigenvectors to reconstruct an approximation of the centered data. Finally, it uncenters the reconstructed data to obtain the approximation in the original scale (assuming attributes are present).
