@@ -164,8 +164,6 @@ pcApprox = function(x, npc){
 #' time <- rexp(n = 20, rate = 0.1)
 #' status <- rbinom(n = 20, size = 1, prob = 0.7)
 #' 
-#' # Generate Kaplan-Meier survival curve
-#' km_curve <- survCurv(status, time)
 #' 
 #' # Print the ggplot object (use ggplot2::print() for detailed view)
 #' km_curve
@@ -173,7 +171,7 @@ pcApprox = function(x, npc){
 #' @export
 
 survCurv = function(status, time){
-  df = dplyr::tibble(time=time, status=status) |> dplyr::arrange(time)
+  df = dplyr::tibble(time=time, status=status) |> dplyr::arrange(time) |> dplyr::filter(time >= 0)
   
   df.curv = df |>
     dplyr::group_by(time) |>
