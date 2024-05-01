@@ -191,6 +191,54 @@ survCurv = function(status, time){
 }
 
 
+#' @title Downloads a REDCap report as a data frame
+#'
+#' @description This function downloads a REDCap report as a data frame using an access token retrieved from an environment variable. It constructs a form data object with the necessary parameters for the REDCap API and sends a POST request to the REDCap URL. The function then parses the response content and converts it to a data frame using `dplyr::tibble`.
+#'
+#' @param redcapTokenName A character string representing the environment variable name that stores the REDCap access token.
+#'
+#' @param redcapUrl A character string representing the base URL of the REDCap instance.
+#'
+#' @param redcapReportId A character string representing the unique identifier of the REDCap report to download.
+#'
+#' @return A data frame containing the downloaded report data (if successful). The structure and content of the data frame will depend on the specific REDCap report design.
+#'
+#' @details This function assumes the REDCap access token is stored in an environment variable. It retrieves the token using `Sys.getenv` and constructs a form data object with the required parameters for the REDCap API's download functionality. The function utilizes the `httr` package for making the HTTP POST request and parsing the response. It's important to ensure you have the necessary permissions and configurations set up on the REDCap server for accessing reports through the API.
+#'
+#' @note Downloading reports via the API might have limitations compared to the REDCap user interface. It's recommended to consult the REDCap API documentation for specific details and potential restrictions.
+#'
+#' @references REDCap Consortium. (2023). REDCap API Documentation. https://redcap.vanderbilt.edu/
+#'
+#' @examples
+#' 
+#' # Assuming REDCap access token is stored in an environment variable named "REDCAP_TOKEN"
+#' report_data <- downloadRedcapReport(redcapTokenName = "REDCAP_TOKEN", 
+#'                                     redcapUrl = "https://your_redcap_url.com/api/", 
+#'                                     redcapReportId = "123")
+#'
+#' # Explore the downloaded data frame (structure may vary depending on the report)
+#' head(report_data)
+#'
+#' @export
+downloadRedcapReport = function(redcapTokenName, redcapUrl, redcapReportId){
+  token <- Sys.getenv(paste(redcapTokenName))
+  url <- redcapUrl
 
-
+  formData <- list("token"=token,
+                   content='report',
+                   format='csv',
+                   report_id=redcapReportId,
+                   csvDelimiter='',
+                   rawOrLabel='raw',
+                   rawOrLabelHeaders='raw',
+                   exportCheckboxLabel='false',
+                   returnFormat='csv'
+  )
+  
+  response <- httr::POST(url, body = formData, encode = "form")
+  result <- httr::content(response)
+  df_result = dplyr::tibble(result)
+  
+  return (df_result)
+}
 
