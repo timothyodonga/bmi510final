@@ -26,3 +26,14 @@ Or, use the individual functions from the package without loading the entire pac
 ```{r}
 bmi510final::logLikBernoulli(c(1,0,0,1))
 ```
+
+### Note
+In order to run the downloadRedcapReport function, you need to create a .Renviron file and add the redcap token you have into this file.
+```{text}
+redcap_token=XXXX
+``` 
+Then load the environment variables  using the command below in your R console
+```{r}
+Sys.getenv()
+```
+If the token isn't visible you might need to restart your RStudio
