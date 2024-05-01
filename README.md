@@ -1,4 +1,11 @@
 # bmi510final
+This project includes a package of R functions from the BMI510 final project. The following functios are included in the package.
+- logLikBernoulli
+- survCurv
+- unscale
+- pcApprox
+- minimumN
+- downloadRedcapReport
 
 ## Installation
 To install the package from github, first install the devtools package in your R installation if you haven't already done using the command below
