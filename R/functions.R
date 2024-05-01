@@ -289,5 +289,3 @@ standardizeNames = function(data){
   data = data |> dplyr::rename_with(~ janitor::make_clean_names(.x, case = "small_camel"))
   return (data)
 }
-
-
